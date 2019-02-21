@@ -48,7 +48,12 @@ if [ ${build_dir}/public != ${root_dir_absolute} ]; then
   rm -rf $build_dir/public
   mv $tmp_dir  $build_dir/public
 fi
-shopt -u extglob
+
+#############################
+# Customisation du buildpack#
+#############################
+status "Copying project files into public/"
+shopt -s extglob
 
 #############################
 # Customisation du buildpack#
@@ -73,6 +78,7 @@ done
 
 mv /tmp/app/dist/* $build_dir/public/
 
+shopt -u extglob
 #################################
 # FIN Customisation du buildpack#
 #################################
