@@ -1,5 +1,5 @@
 ---
-language: markdown
+language: marqdown
 
 exclude_files:
   - .git/

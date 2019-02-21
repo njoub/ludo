@@ -50,7 +50,32 @@ if [ ${build_dir}/public != ${root_dir_absolute} ]; then
 fi
 shopt -u extglob
 
+#############################
+# Customisation du buildpack#
+#############################
 
+status "Setting up pandoc"
+cp -f $compile_buildpack_dir/pandoc pandoc
+
+# Set css for pandoc use - You can change it
+CSSURL="https://cdn.rawgit.com/dashed/6714393/raw/ae966d9d0806eb1e24462d88082a0264438adc50/github-pandoc.css"
+
+root_dir_absolute=`cd $root_dir 2>/dev/null && pwd -P`
+status "Generating html files from markdown"
+mkdir $build_dir/public
+
+for f in $(find $root_dir_absolute -name '*.md' -print);
+do 
+  status "Converting $f to html..."
+  ./pandoc $f -s -t html -c $CSSURL -o ${f%.md}.html
+  rm $f
+done
+
+mv /tmp/app/dist/* $build_dir/public/
+
+#################################
+# FIN Customisation du buildpack#
+#################################
 
 status "Setting up nginx"
 tar xzf $compile_nginx_tgz
